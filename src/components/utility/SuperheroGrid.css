@@ -7,3 +7,28 @@
     align-items: center;
     margin-bottom: 20px;
 }
+
+.SuperheroGrid .description {
+    display:none;
+    font-size: 8px;
+}
+
+.SuperheroGrid .read-more-button {
+    background-color: red;
+    border: none;
+    text-align: center;
+    color: white;
+    cursor: pointer;
+    padding: 2px 5px;
+    border-radius: 2px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 5px;
+    display:none;
+}
+
+/* .SuperheroGrid .read-more-button {
+    font-weight: bold;
+    font-size: 1rem;
+} */
