@@ -6,10 +6,18 @@ const marvelAxios = axios.create({
 })
 
 const httpClient = {
-    get: async (path) => {
+    get: async (path, offset, limit) => {
         try{
             // eslint-disable-next-line
-            const response = await marvelAxios.get(path + "?ts=" + config.ts + "&" + "apikey=" + config.publicKey + "&hash=" + config.hash)
+            const response = await marvelAxios.get(path, {
+                params: {
+                    ts: config.ts,
+                    apikey: config.publicKey,
+                    hash: config.hash,
+                    offset: offset,
+                    limit: limit
+                }
+            })
             return response.data
         }catch(err) {
             console.log("error GET " + path + " : " + err)
