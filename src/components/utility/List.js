@@ -1,7 +1,8 @@
 import './List.css'
 
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Card, CardMedia, CardContent, Typography } from '@mui/material'
+import { motion } from 'framer-motion'
 
 import styled from 'styled-components'
 
@@ -9,118 +10,54 @@ import http from '../../api/httpClient'
 
 const StyledCard = styled(Card)
 `
-    width:25%;
+    width:20%;
+    height:250px;
     margin:10px;
 `
 
 function List () {
+    const [characters, setCharacters] = useState({})
+    const [isLoading, setIsLoading] = useState(true)
 
-    console.log(http.get("characters"))
+    useEffect(() => {
+        (async () => {
+            setCharacters(await http.get("characters"))
+            setIsLoading(false)
+        })()
+    }, [])
 
     return(
-        <div className="List">
-            <StyledCard>
-                <CardMedia 
-                    component="img"
-                    wide
-                    image="https://i.pinimg.com/originals/76/46/a9/7646a94792eeb2b072335e16dd7c9f11.png"
-                    height={100}
-                />
-                <CardContent>
-                    <Typography gutterBottom variant="h5" component="h2">
-                    Spiderman
-                    </Typography>
-                    <Typography variant="body2" color="textSecondary" component="p">
-                    His name is Spiderman
-                    </Typography>
-                </CardContent>
-            </StyledCard>
+        <motion.div 
+            initial={{scale:0, x:1000, y: 1000}}
+            animate={{scale: 1, x: 0, y: 0}}
+            transition={{delay: 1, duration: 1}}
+            className="List"
+        >
+            {!isLoading && characters.data.results.map((character, i) => {
+                return (
+                    <StyledCard
+                        component={motion.div}
 
-            <StyledCard>
-                <CardMedia 
-                    component="img"
-                    wide
-                    image="https://i.pinimg.com/originals/76/46/a9/7646a94792eeb2b072335e16dd7c9f11.png"
-                    height={100}
-                />
-                <CardContent>
-                    <Typography gutterBottom variant="h5" component="h2">
-                    Spiderman
-                    </Typography>
-                    <Typography variant="body2" color="textSecondary" component="p">
-                    His name is Spiderman
-                    </Typography>
-                </CardContent>
-            </StyledCard>
-
-            <StyledCard>
-                <CardMedia 
-                    component="img"
-                    wide
-                    image="https://i.pinimg.com/originals/76/46/a9/7646a94792eeb2b072335e16dd7c9f11.png"
-                    height={100}
-                />
-                <CardContent>
-                    <Typography gutterBottom variant="h5" component="h2">
-                    Spiderman
-                    </Typography>
-                    <Typography variant="body2" color="textSecondary" component="p">
-                    His name is Spiderman
-                    </Typography>
-                </CardContent>
-            </StyledCard>
-
-            <StyledCard>
-                <CardMedia 
-                    component="img"
-                    wide
-                    image="https://i.pinimg.com/originals/76/46/a9/7646a94792eeb2b072335e16dd7c9f11.png"
-                    height={100}
-                />
-                <CardContent>
-                    <Typography gutterBottom variant="h5" component="h2">
-                    Spiderman
-                    </Typography>
-                    <Typography variant="body2" color="textSecondary" component="p">
-                    His name is Spiderman
-                    </Typography>
-                </CardContent>
-            </StyledCard>
-
-            <StyledCard>
-                <CardMedia 
-                    component="img"
-                    wide
-                    image="https://i.pinimg.com/originals/76/46/a9/7646a94792eeb2b072335e16dd7c9f11.png"
-                    height={100}
-                />
-                <CardContent>
-                    <Typography gutterBottom variant="h5" component="h2">
-                    Spiderman
-                    </Typography>
-                    <Typography variant="body2" color="textSecondary" component="p">
-                    His name is Spiderman
-                    </Typography>
-                </CardContent>
-            </StyledCard>
-
-            <StyledCard>
-                <CardMedia 
-                    component="img"
-                    wide
-                    image="https://i.pinimg.com/originals/76/46/a9/7646a94792eeb2b072335e16dd7c9f11.png"
-                    height={100}
-                />
-                <CardContent>
-                    <Typography gutterBottom variant="h5" component="h2">
-                    Spiderman
-                    </Typography>
-                    <Typography variant="body2" color="textSecondary" component="p">
-                    His name is Spiderman
-                    </Typography>
-                </CardContent>
-            </StyledCard>
-        </div>
+                        whileHover={{
+                            scale: 1.1,
+                            transition: { duration: 0.3 }
+                        }}
+                    >
+                        <CardMedia 
+                            component="img"
+                            wide
+                            image={character.thumbnail.path + "." + character.thumbnail.extension }
+                            height={190}
+                        />
+                        <CardContent>
+                            <Typography gutterBottom variant="p" component="p">
+                            {character.name}
+                            </Typography>
+                        </CardContent>
+                    </StyledCard>
+                )
+            })}
+        </motion.div>
     )
 }
 
