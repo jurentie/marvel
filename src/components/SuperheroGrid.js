@@ -29,6 +29,7 @@ function SuperheroGrid ({updateCharacterId}) {
     const [isLoading, setIsLoading] = useState(true)
     const [pages, setPages] = useState(0)
     const [offset, setOffset] = useState(0)
+    const [initialPageLoad, setInitialPageLoad] = useState(true)
 
     const [scope, animateBlock] = useAnimate();
 
@@ -47,6 +48,15 @@ function SuperheroGrid ({updateCharacterId}) {
                 setCharacters(result)
                 setIsLoading(false)
                 setPages(Math.ceil(result.data.total / limit))
+                if(!initialPageLoad){
+                    setTimeout(() => {
+                        cycle()
+                    }, 1050)
+                    setTimeout(() => {
+                        cycle()
+                    }, 1100)
+                }
+                setInitialPageLoad(false)
             })
         })()
     }, [offset])
@@ -57,12 +67,6 @@ function SuperheroGrid ({updateCharacterId}) {
         setTimeout(() => {
             cycle()
         }, 1000)
-        setTimeout(() => {
-            cycle()
-        }, 1050)
-        setTimeout(() => {
-            cycle()
-        }, 1100)
     }
 
     const handleAnimate = async (i) => {
