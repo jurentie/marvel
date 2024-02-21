@@ -6,7 +6,7 @@ import { motion, useCycle, useAnimate } from 'framer-motion'
 
 import styled from 'styled-components'
 
-import http from '../../api/httpClient'
+import http from '../api/httpClient'
 
 const StyledCard = styled(Card)
 `
@@ -24,7 +24,7 @@ const StyledPagination = styled(Pagination)
     }
 `
 
-function SuperheroGrid () {
+function SuperheroGrid ({updateCharacterId}) {
     const [characters, setCharacters] = useState({})
     const [isLoading, setIsLoading] = useState(true)
     const [pages, setPages] = useState(0)
@@ -43,7 +43,7 @@ function SuperheroGrid () {
 
     useEffect(() => {
         (async () => {
-            await http.get("characters", offset, limit).then( result => {
+            await http.getCharacters(offset, limit).then( result => {
                 setCharacters(result)
                 setIsLoading(false)
                 setPages(Math.ceil(result.data.total / limit))
@@ -120,7 +120,13 @@ function SuperheroGrid () {
                                         {(character.description === "") ? "This character was not provided a description from the marvel API." : truncate(character.description, 200)}
                                     </p>
                                 </div>
-                                <button id={"read-more-button-" + i} className="read-more-button">Read More</button>
+                                <button 
+                                    id={"read-more-button-" + i} 
+                                    className="read-more-button"
+                                    onClick={() => {updateCharacterId(character.id)}}
+                                >
+                                    Read More
+                                </button>
                             </CardContent>
                         </StyledCard>
                     )

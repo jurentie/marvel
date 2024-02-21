@@ -6,10 +6,10 @@ const marvelAxios = axios.create({
 })
 
 const httpClient = {
-    get: async (path, offset, limit) => {
+    getCharacters: async (offset, limit) => {
         try{
             // eslint-disable-next-line
-            const response = await marvelAxios.get(path, {
+            const response = await marvelAxios.get("/characters", {
                 params: {
                     ts: config.ts,
                     apikey: config.publicKey,
@@ -20,7 +20,22 @@ const httpClient = {
             })
             return response.data
         }catch(err) {
-            console.log("error GET " + path + " : " + err)
+            console.log("error GET /characters : " + err)
+        }
+    },
+    getCharacter: async(characterId) => {
+        try{
+            // eslint-disable-next-line
+            const response = await marvelAxios.get("/characters/" + characterId, {
+                params: {
+                    ts: config.ts,
+                    apikey: config.publicKey,
+                    hash: config.hash
+                }
+            })
+            return response.data.data.results[0]
+        }catch(err) {
+            console.log("error GET /characters/" + characterId + " : " + err)
         }
     }
 }

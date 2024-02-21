@@ -1,9 +1,12 @@
 import './App.css';
 
+import React, {useState} from 'react'
+
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 
 import Header from './components/utility/Header';
-import SuperheroGrid from './components/utility/SuperheroGrid';
+import SuperheroGrid from './components/SuperheroGrid';
+import CharacterPage from './components/CharacterPage';
 
 const theme = createTheme({
   palette: {
@@ -17,11 +20,23 @@ const theme = createTheme({
 });
 
 function App() {
+  const [characterId, setCharacterId] = useState("")
+
+  const updateCharacterId = (id) => {
+    console.log(id)
+    setCharacterId(id)
+  }
+
   return ( 
     <div className="App">
       <ThemeProvider theme={theme}>
         <Header />
-        <SuperheroGrid />
+        {characterId === "" && (
+          <SuperheroGrid updateCharacterId={updateCharacterId}/>
+        )}
+        {characterId !== "" && (
+          <CharacterPage characterId={characterId}/>
+        )}
       </ThemeProvider>
     </div>
   );

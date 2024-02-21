@@ -1,0 +1,10 @@
+.CharacterPage {
+    display:flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.CharacterPage #character-image {
+    width: 40%;
+}
