@@ -20,7 +20,7 @@ const theme = createTheme({
 });
 
 function App() {
-  const [characterId, setCharacterId] = useState("")
+  const [characterId, setCharacterId] = useState(0)
 
   const updateCharacterId = (id) => {
     console.log(id)
@@ -31,11 +31,11 @@ function App() {
     <div className="App">
       <ThemeProvider theme={theme}>
         <Header />
-        {characterId === "" && (
+        {characterId === 0 && (
           <SuperheroGrid updateCharacterId={updateCharacterId}/>
         )}
-        {characterId !== "" && (
-          <CharacterPage characterId={characterId}/>
+        {characterId !== 0 && (
+          <CharacterPage characterId={characterId} updateCharacterId={updateCharacterId}/>
         )}
       </ThemeProvider>
     </div>

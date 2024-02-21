@@ -6,5 +6,19 @@
 }
 
 .CharacterPage #character-image {
-    width: 40%;
+    width: 1000px;
+    max-width: 40%;
+}
+
+.CharacterPage #back-button {
+    background-color: red;
+    border: none;
+    text-align: center;
+    color: white;
+    cursor: pointer;
+    padding: 5px 10px;
+    border-radius: 2px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }

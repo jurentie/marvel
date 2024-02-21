@@ -59,6 +59,7 @@ function SuperheroGrid ({updateCharacterId}) {
                 setInitialPageLoad(false)
             })
         })()
+    // eslint-disable-next-line
     }, [offset])
 
     const handleChange = (event, page) => {

@@ -4,7 +4,7 @@ import React,  {useState, useEffect} from 'react'
 
 import http from '../api/httpClient'
 
-function CharacterPage ({characterId}) {
+function CharacterPage ({characterId, updateCharacterId}) {
     const [character, setCharacter] = useState({})
     const [isLoading, setIsLoading] = useState(true)
 
@@ -15,7 +15,7 @@ function CharacterPage ({characterId}) {
                 setIsLoading(false)
             })
         })()
-    }, [])
+    }, [characterId])
 
     return (
         <>
@@ -24,6 +24,7 @@ function CharacterPage ({characterId}) {
                     <>
                         <img src={character.thumbnail.path + "." +character.thumbnail.extension} alt={"character-image-"+characterId} id="character-image"/>
                         <p>{character.name}</p>
+                        <button id="back-button" onClick={() => updateCharacterId(0)}>Back</button>
                     </>
                 )}
                 
