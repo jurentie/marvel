@@ -28,6 +28,10 @@
     display:none;
 }
 
+.SuperheroGrid .search input {
+    color: white;
+}
+
 /* .SuperheroGrid .read-more-button {
     font-weight: bold;
     font-size: 1rem;

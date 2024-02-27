@@ -37,6 +37,24 @@ const httpClient = {
         }catch(err) {
             console.log("error GET /characters/" + characterId + " : " + err)
         }
+    },
+    searchCharacters: async(character, offset, limit) => {
+        try{
+            // eslint-disable-next-line
+            const response = await marvelAxios.get("/characters", {
+                params: {
+                    ts: config.ts,
+                    apikey: config.publicKey,
+                    hash: config.hash,
+                    nameStartsWith: character,
+                    offset: offset,
+                    limit: limit
+                }
+            })
+            return response.data
+        }catch(err) {
+            console.log("error GET /characters?nameStartsWith=" + character + " : " + err)
+        }
     }
 }
 

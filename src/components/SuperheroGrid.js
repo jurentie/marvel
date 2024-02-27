@@ -1,7 +1,7 @@
 import './SuperheroGrid.css'
 
 import React, { useEffect, useState } from 'react'
-import { Card, CardMedia, CardContent, Typography, Pagination } from '@mui/material'
+import { Card, CardMedia, CardContent, Typography, TextField, Pagination } from '@mui/material'
 import { motion, useCycle, useAnimate } from 'framer-motion'
 
 import styled from 'styled-components'
@@ -18,56 +18,101 @@ const StyledCard = styled(Card)
 const StyledPagination = styled(Pagination)
 `
     margin-bottom: 50px;
-
+    position:relative;
     & .MuiPaginationItem-root {
         color: white !important;
     }
 `
 
-function SuperheroGrid ({updateCharacterId}) {
+const WhiteBorderTextField = styled(TextField)`
+  & label {
+    color: white;
+  }
+  & input {
+    color: white;
+  }
+  & .MuiOutlinedInput-root {
+    & fieldset {
+      border-color: white;
+    }
+  }
+  & .MuiOutlinedInput-root {
+    &:hover fieldset {
+      border-color: white;
+    }
+  }
+  width: 300px;
+  margin-bottom:10px !important;
+`;
+
+function SuperheroGrid ({updateCharacterId, activePage, setActivePage, characterSearch, setCharacterSearch, initialPageLoad, setInitialPageLoad}) {
+    const limit = 24
+
     const [characters, setCharacters] = useState({})
     const [isLoading, setIsLoading] = useState(true)
+    const [offset, setOffset] = useState((activePage - 1) * limit)
     const [pages, setPages] = useState(0)
-    const [offset, setOffset] = useState(0)
-    const [initialPageLoad, setInitialPageLoad] = useState(true)
 
+    const [exitOrEnterSearch, setExitOrEnterSearch] = useState(false)
+    const [pageIncOrDec, setPageIncOrDec] = useState(false)
+ 
     const [scope, animateBlock] = useAnimate();
-
-    const limit = 24
 
     const [animate, cycle] = useCycle(
         {opacity: 1, x: 0, transition:{duration:1}},
-        {opacity: 0, x: -100, transition:{duration:.5}},
-        {opacity: 0, x: 100}, 
-        {opacity: 0, x: 500},
+        {opacity: 0, x: -10, transition:{duration:.5}},
+        {opacity: 0, x: 10}, 
+        {opacity: 0, x: 10},
     )
 
     useEffect(() => {
         (async () => {
-            await http.getCharacters(offset, limit).then( result => {
-                setCharacters(result)
-                setIsLoading(false)
-                setPages(Math.ceil(result.data.total / limit))
-                if(!initialPageLoad){
-                    setTimeout(() => {
-                        cycle()
-                    }, 1050)
-                    setTimeout(() => {
-                        cycle()
-                    }, 1100)
-                }
-                setInitialPageLoad(false)
-            })
+            if(characterSearch === ""){
+                await http.getCharacters(offset, limit).then( result => {
+                    setCharacters(result)
+                    setIsLoading(false)
+                    setPages(Math.ceil(result.data.total / limit))
+                    if(!initialPageLoad){
+                        setTimeout(() => {
+                            cycle()
+                        }, 1050)
+                        setTimeout(() => {
+                            cycle()
+                        }, 1100)
+                    }
+                    setInitialPageLoad(false)
+                })
+            }else{
+                await http.searchCharacters(characterSearch, offset, limit).then(result => {
+                    setCharacters(result)
+                    setIsLoading(false)
+                    setPages(Math.ceil(result.data.total / limit))
+                    if(exitOrEnterSearch || pageIncOrDec){
+                        setTimeout(() => {
+                            cycle()
+                        }, 1050)
+                        setTimeout(() => {
+                            cycle()
+                        }, 1100)
+                    }
+                })
+            }
         })()
     // eslint-disable-next-line
-    }, [offset])
+    }, [offset, characterSearch])
 
-    const handleChange = (event, page) => {
-        setOffset((page - 1) * limit)
+    useEffect(() => {
+        setPageIncOrDec(true)
+        setOffset((activePage - 1) * limit)
         cycle()
         setTimeout(() => {
             cycle()
         }, 1000)
+    // eslint-disable-next-line
+    }, [activePage])
+
+    const handleChange = (event, page) => {
+        setActivePage(page)
     }
 
     const handleAnimate = async (i) => {
@@ -89,10 +134,45 @@ function SuperheroGrid ({updateCharacterId}) {
         return (str.length > n) ? str.slice(0, n-1) + '...' : str;
     }
 
+    const handleSearch = (event) => {
+        setPageIncOrDec(false)
+        setCharacterSearch(event.target.value)
+        setOffset((activePage - 1) * limit)
+        setActivePage(1)
+        if(enterOrExitSearch(event.target.value)){
+            cycle()
+            setTimeout(() => {
+                cycle()
+            }, 1000)
+        }
+    }
+
+    const enterOrExitSearch = (search) => {
+        if(characterSearch !== "" && search === ""){
+            setExitOrEnterSearch(true)
+            return true
+        }
+        else if(characterSearch === "" && search !== ""){
+            setExitOrEnterSearch(true)
+            return true
+        }
+        else{
+            setExitOrEnterSearch(false)
+            return false
+        }
+    }
+
     return(
         <>
+            <WhiteBorderTextField 
+                id="outlined-basic" 
+                label="Search" 
+                value={characterSearch}
+                variant="outlined" 
+                onChange={handleSearch}
+            />
             <motion.div 
-                initial={{opacity:0, x: 100}}
+                initial={{opacity:0, x: 10}}
                 animate={animate}
                 className="SuperheroGrid"
                 ref={scope}
@@ -144,6 +224,7 @@ function SuperheroGrid ({updateCharacterId}) {
             >
                 <StyledPagination 
                     count={pages} 
+                    page={activePage}
                     color="secondary" 
                     showFirstButton 
                     showLastButton 

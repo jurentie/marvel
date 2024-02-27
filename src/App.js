@@ -21,6 +21,9 @@ const theme = createTheme({
 
 function App() {
   const [characterId, setCharacterId] = useState(0)
+  const [characterSearch, setCharacterSearch] = useState("")
+  const [initialPageLoad, setInitialPageLoad] = useState(true)
+  const [activePage, setActivePage] = useState(1)
 
   const updateCharacterId = (id) => {
     console.log(id)
@@ -32,10 +35,21 @@ function App() {
       <ThemeProvider theme={theme}>
         <Header />
         {characterId === 0 && (
-          <SuperheroGrid updateCharacterId={updateCharacterId}/>
+          <SuperheroGrid 
+            updateCharacterId={updateCharacterId} 
+            activePage={activePage} 
+            setActivePage={setActivePage} 
+            characterSearch={characterSearch} 
+            setCharacterSearch={setCharacterSearch}
+            initialPageLoad={initialPageLoad}
+            setInitialPageLoad={setInitialPageLoad}
+          />
         )}
         {characterId !== 0 && (
-          <CharacterPage characterId={characterId} updateCharacterId={updateCharacterId}/>
+          <CharacterPage 
+            characterId={characterId} 
+            updateCharacterId={updateCharacterId}
+          />
         )}
       </ThemeProvider>
     </div>
