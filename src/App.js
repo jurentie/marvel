@@ -22,8 +22,8 @@ const theme = createTheme({
 function App() {
   const [characterId, setCharacterId] = useState(0)
   const [characterSearch, setCharacterSearch] = useState("")
-  const [initialPageLoad, setInitialPageLoad] = useState(true)
   const [activePage, setActivePage] = useState(1)
+  const [exitOrEnterSearch, setExitOrEnterSearch] = useState(false)
 
   const updateCharacterId = (id) => {
     console.log(id)
@@ -41,14 +41,15 @@ function App() {
             setActivePage={setActivePage} 
             characterSearch={characterSearch} 
             setCharacterSearch={setCharacterSearch}
-            initialPageLoad={initialPageLoad}
-            setInitialPageLoad={setInitialPageLoad}
+            exitOrEnterSearch={exitOrEnterSearch}
+            setExitOrEnterSearch={setExitOrEnterSearch}
           />
         )}
         {characterId !== 0 && (
           <CharacterPage 
             characterId={characterId} 
             updateCharacterId={updateCharacterId}
+            setExitOrEnterSearch={setExitOrEnterSearch}
           />
         )}
       </ThemeProvider>

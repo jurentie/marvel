@@ -45,17 +45,15 @@ const WhiteBorderTextField = styled(TextField)`
   margin-bottom:10px !important;
 `;
 
-function SuperheroGrid ({updateCharacterId, activePage, setActivePage, characterSearch, setCharacterSearch, initialPageLoad, setInitialPageLoad}) {
+function SuperheroGrid ({updateCharacterId, activePage, setActivePage, characterSearch, setCharacterSearch, exitOrEnterSearch, setExitOrEnterSearch}) {
     const limit = 24
 
     const [characters, setCharacters] = useState({})
     const [isLoading, setIsLoading] = useState(true)
     const [offset, setOffset] = useState((activePage - 1) * limit)
     const [pages, setPages] = useState(0)
-
-    const [exitOrEnterSearch, setExitOrEnterSearch] = useState(false)
     const [pageIncOrDec, setPageIncOrDec] = useState(false)
- 
+
     const [scope, animateBlock] = useAnimate();
 
     const [animate, cycle] = useCycle(
@@ -72,15 +70,12 @@ function SuperheroGrid ({updateCharacterId, activePage, setActivePage, character
                     setCharacters(result)
                     setIsLoading(false)
                     setPages(Math.ceil(result.data.total / limit))
-                    // if(!initialPageLoad){
                         setTimeout(() => {
                             cycle()
                         }, 1050)
                         setTimeout(() => {
                             cycle()
                         }, 1100)
-                    // }
-                    setInitialPageLoad(false)
                 })
             }else{
                 await http.searchCharacters(characterSearch, offset, limit).then(result => {

@@ -4,7 +4,7 @@ import React,  {useState, useEffect} from 'react'
 
 import http from '../api/httpClient'
 
-function CharacterPage ({characterId, updateCharacterId}) {
+function CharacterPage ({characterId, updateCharacterId, setExitOrEnterSearch}) {
     const [character, setCharacter] = useState({})
     const [isLoading, setIsLoading] = useState(true)
 
@@ -17,6 +17,11 @@ function CharacterPage ({characterId, updateCharacterId}) {
         })()
     }, [characterId])
 
+    const handleBackButton = () => {
+        updateCharacterId(0)
+        setExitOrEnterSearch(true)
+    }
+
     return (
         <>
             <div className="CharacterPage">
@@ -24,7 +29,7 @@ function CharacterPage ({characterId, updateCharacterId}) {
                     <>
                         <img src={character.thumbnail.path + "." +character.thumbnail.extension} alt={"character-image-"+characterId} id="character-image"/>
                         <p>{character.name}</p>
-                        <button id="back-button" onClick={() => updateCharacterId(0)}>Back</button>
+                        <button id="back-button" onClick={handleBackButton}>Back</button>
                     </>
                 )}
                 
