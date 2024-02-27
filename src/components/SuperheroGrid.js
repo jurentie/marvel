@@ -72,14 +72,14 @@ function SuperheroGrid ({updateCharacterId, activePage, setActivePage, character
                     setCharacters(result)
                     setIsLoading(false)
                     setPages(Math.ceil(result.data.total / limit))
-                    if(!initialPageLoad){
+                    // if(!initialPageLoad){
                         setTimeout(() => {
                             cycle()
                         }, 1050)
                         setTimeout(() => {
                             cycle()
                         }, 1100)
-                    }
+                    // }
                     setInitialPageLoad(false)
                 })
             }else{
