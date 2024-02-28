@@ -24,8 +24,11 @@ function CharacterPage ({characterId, updateCharacterId, setExitOrEnterSearch}) 
     }
 
     function listStrings(list) {
-        if (list.length <= 1) {
-          return list[0].name + ".";
+        if(list.length === 0){
+            return "None Listed"
+        }
+        if(list.length <= 1) {
+            return list[0].name + ".";
         }
         return list.slice(0, -1).map(item => {return item.name}).join(",") + " and " + list.at(-1).name + ".";
       }
@@ -54,7 +57,7 @@ function CharacterPage ({characterId, updateCharacterId, setExitOrEnterSearch}) 
                                     animate={{opacity:1}}
                                     transition={{duration:1.5}}
                                 >
-                                    <p>{character.description}</p>
+                                    <p>{character.description.length > 0 ? character.length.description : "No Description"}</p>
                                     <p><span className="sub-heading">Comics:</span> {listStrings(character.comics.items)}</p> 
                                     <p><span className="sub-heading">Series:</span>{listStrings(character.series.items)}</p>
                                     <p><span className="sub-heading">Stories:</span> {listStrings(character.stories.items)}</p>
