@@ -26,7 +26,6 @@ function App() {
   const [exitOrEnterSearch, setExitOrEnterSearch] = useState(false)
 
   const updateCharacterId = (id) => {
-    console.log(id)
     setCharacterId(id)
   }
 
