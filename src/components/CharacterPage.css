@@ -33,3 +33,12 @@
     width: 50%;
     padding-left:5%;
 }
+
+.CharacterPage h1 {
+    color: red
+}
+
+.CharacterPage .sub-heading {
+    font-weight: bold;
+    color:red;
+}

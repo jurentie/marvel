@@ -1,6 +1,7 @@
 import './CharacterPage.css'
 
 import React,  {useState, useEffect} from 'react'
+import { motion } from 'framer-motion'
 
 import http from '../api/httpClient'
 
@@ -35,13 +36,29 @@ function CharacterPage ({characterId, updateCharacterId, setExitOrEnterSearch}) 
                 {!isLoading && (
                     <>
                         <div className="heading">
-                            <img src={character.thumbnail.path + "." +character.thumbnail.extension} alt={"character-image-"+characterId} id="character-image"/>
+                            <motion.img 
+                                initial={{scale:0, opacity: 0}}
+                                animate={{scale:1, opacity: 1}}
+                                transition={{duration: 1}}
+                                src={character.thumbnail.path + "." +character.thumbnail.extension} alt={"character-image-"+characterId} 
+                                id="character-image"
+                            />
                             <div className="overview">
-                                <p>{character.name}</p>
-                                <p>{character.description}</p>
-                                <p>Comics: {listStrings(character.comics.items)}</p> 
-                                <p>Series: {listStrings(character.series.items)}</p>
-                                <p>Stories: {listStrings(character.stories.items)}</p>
+                                <motion.h1
+                                    initial={{y: 50, opacity: 0}}
+                                    animate={{y:0, opacity: 1}}
+                                    transition={{duration: 1}}
+                                >{character.name}</motion.h1>
+                                <motion.div
+                                    initial={{opacity:0}}
+                                    animate={{opacity:1}}
+                                    transition={{duration:1.5}}
+                                >
+                                    <p>{character.description}</p>
+                                    <p><span className="sub-heading">Comics:</span> {listStrings(character.comics.items)}</p> 
+                                    <p><span className="sub-heading">Series:</span>{listStrings(character.series.items)}</p>
+                                    <p><span className="sub-heading">Stories:</span> {listStrings(character.stories.items)}</p>
+                                </motion.div>
                             </div>
                         </div>
                         <button id="back-button" onClick={handleBackButton}>Back</button>
