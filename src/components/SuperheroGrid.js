@@ -111,7 +111,7 @@ function SuperheroGrid ({updateCharacterId, activePage, setActivePage, character
     }
 
     const handleAnimate = async (i) => {
-        animateBlock("#styled-card-" + i, {scale: 2})
+        animateBlock("#styled-card-" + i, {scale: 1.8})
         document.getElementById("card-media-" + i).height = 50
         document.getElementById("name-" + i).style.fontSize = "9px"
         document.getElementById("description-" + i).style.display = "block"
