@@ -64,7 +64,9 @@ function CharacterPage ({characterId, updateCharacterId, setExitOrEnterSearch}) 
                                 </motion.div>
                             </div>
                         </div>
+                        &nbsp; &nbsp;
                         <button id="back-button" onClick={handleBackButton}>Back</button>
+                        &nbsp; &nbsp;
                     </>
                 )}
                 

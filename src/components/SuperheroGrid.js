@@ -7,10 +7,10 @@ import { motion, useCycle, useAnimate } from 'framer-motion'
 import styled from 'styled-components'
 
 import http from '../api/httpClient'
+import useWindowDimensions from './utility/UseWindowDimensions'
 
 const StyledCard = styled(Card)
 `
-    width:11%;
     height:175px;
     margin:10px;
 `
@@ -47,6 +47,8 @@ const WhiteBorderTextField = styled(TextField)`
 
 function SuperheroGrid ({updateCharacterId, activePage, setActivePage, characterSearch, setCharacterSearch, exitOrEnterSearch, setExitOrEnterSearch}) {
     const limit = 24
+
+    const {width} = useWindowDimensions()
 
     const [characters, setCharacters] = useState({})
     const [isLoading, setIsLoading] = useState(true)
@@ -111,7 +113,8 @@ function SuperheroGrid ({updateCharacterId, activePage, setActivePage, character
     }
 
     const handleAnimate = async (i) => {
-        animateBlock("#styled-card-" + i, {scale: 1.8})
+        const resize = width < 750 ? 1.2 : 2
+        animateBlock("#styled-card-" + i, {scale: resize})
         document.getElementById("card-media-" + i).height = 50
         document.getElementById("name-" + i).style.fontSize = "9px"
         document.getElementById("description-" + i).style.display = "block"
@@ -125,8 +128,9 @@ function SuperheroGrid ({updateCharacterId, activePage, setActivePage, character
         document.getElementById("read-more-button-" + i).style.display = "none"
     }
 
-    const truncate = (str, n) =>{
-        return (str.length > n) ? str.slice(0, n-1) + '...' : str;
+    const truncate = (str) =>{
+        const characters = width < 750 ? 100 : 200
+        return (str.length > characters) ? str.slice(0, characters-1) + '...' : str;
     }
 
     const handleSearch = (event) => {
@@ -183,6 +187,7 @@ function SuperheroGrid ({updateCharacterId, activePage, setActivePage, character
                             }}
                             onTap={() => handleAnimate(i)}
                             onHoverEnd={()=> handleHoverEnd(i)}
+                            sx={width < 750 ? {width: 150} : {width: 190}}
                         >
                             <CardMedia 
                                 id={"card-media-" + i}
@@ -197,7 +202,7 @@ function SuperheroGrid ({updateCharacterId, activePage, setActivePage, character
                                 </Typography>
                                 <div>
                                     <p id={"description-" + i} className="description" >
-                                        {(character.description === "") ? "This character was not provided a description from the marvel API." : truncate(character.description, 200)}
+                                        {(character.description === "") ? "This character was not provided a description from the marvel API." : truncate(character.description)}
                                     </p>
                                 </div>
                                 <button 
@@ -224,6 +229,7 @@ function SuperheroGrid ({updateCharacterId, activePage, setActivePage, character
                     showFirstButton 
                     showLastButton 
                     onChange={handleChange}
+                    size={width < 750 ? "small" : "medium"}
                 />
             </motion.div>
         </>
