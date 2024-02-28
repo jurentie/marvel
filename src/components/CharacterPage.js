@@ -58,6 +58,7 @@ function CharacterPage ({characterId, updateCharacterId, setExitOrEnterSearch}) 
                                     transition={{duration:1.5}}
                                 >
                                     <p>{character.description.length > 0 ? character.description : "No Description"}</p>
+                                    <hr/>
                                     <p><span className="sub-heading">Comics:</span> {listStrings(character.comics.items)}</p> 
                                     <p><span className="sub-heading">Series:</span>{listStrings(character.series.items)}</p>
                                     <p><span className="sub-heading">Stories:</span> {listStrings(character.stories.items)}</p>
