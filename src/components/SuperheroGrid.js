@@ -55,6 +55,7 @@ function SuperheroGrid ({updateCharacterId, activePage, setActivePage, character
     const [offset, setOffset] = useState((activePage - 1) * limit)
     const [pages, setPages] = useState(0)
     const [pageIncOrDec, setPageIncOrDec] = useState(false)
+    const [currentIndex, setCurrentIndex] = useState(-1)
 
     const [scope, animateBlock] = useAnimate();
 
@@ -114,6 +115,16 @@ function SuperheroGrid ({updateCharacterId, activePage, setActivePage, character
 
     const handleAnimate = async (i) => {
         const resize = width < 750 ? 1.2 : 1.75
+        if(width < 750){
+            if(i !== currentIndex  && currentIndex > -1){
+                animateBlock("#styled-card-" + currentIndex, {scale: 1 })
+                document.getElementById("card-media-" + currentIndex).height = 120
+                document.getElementById("name-" + currentIndex).style.fontSize = "16px"
+                document.getElementById("description-" + currentIndex).style.display = "none"
+                document.getElementById("read-more-button-" + currentIndex).style.display = "none"
+            }
+            setCurrentIndex(i)
+        }   
         animateBlock("#styled-card-" + i, {scale: resize})
         document.getElementById("card-media-" + i).height = 50
         document.getElementById("name-" + i).style.fontSize = "9px"
